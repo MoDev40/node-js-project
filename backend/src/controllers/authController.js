@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 import User from "../models/User.js";
 import { jwtSecret } from "../config/config.js";
-import { hashPassword, comparePassword } from "../utils/passwordUtils.js";
+import { hashPassword, comparePassword } from "../utils/utils.js";
 
 export async function registerUser(req, res) {
   const { email, name, password } = req.body;

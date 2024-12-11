@@ -15,7 +15,7 @@ export default function auth(req, res, next) {
         res.status(401).json({ message: "Token is not valid" });
       }
 
-      req.decoded = decoded.user;
+      req.user = decoded.user;
 
       next();
     });

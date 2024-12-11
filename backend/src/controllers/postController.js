@@ -76,4 +76,32 @@ const deletePost = async (req, res) => {
       .json({ message: "Failed to delete post", error: error.message });
   }
 };
-export { createPost, getAllPosts, getPostById, deletePost };
+
+const updatePost = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const updates = req.body;
+    const user = req.user;
+
+    const post = await Post.findById(id);
+
+    if (!post) {
+      return res.status(404).json({ message: "Post not found" });
+    }
+
+    if (post.user.toString() !== user) {
+      return res
+        .status(403)
+        .json({ message: "You do not have permission to update this post." });
+    }
+
+    await Post.findByIdAndUpdate(id, updates, { new: true });
+
+    res.status(200).json({ message: "Post updated successfully" });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Failed to update post", error: error.message });
+  }
+};
+export { createPost, getAllPosts, getPostById, deletePost, updatePost };

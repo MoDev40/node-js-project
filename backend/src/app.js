@@ -1,14 +1,16 @@
+import express from "express";
 import chalk from "chalk";
+import helmet from "helmet";
+import cors from "cors";
+import morgan from "morgan";
+import rateLimit from "express-rate-limit";
 import compression from "compression";
 import cookieParser from "cookie-parser";
-import cors from "cors";
-import express from "express";
-import rateLimit from "express-rate-limit";
-import helmet from "helmet";
-import morgan from "morgan";
 import { nodeEnv, port } from "./config/config.js";
 import connectDB from "./config/db.js";
 import authRoutes from "./routes/authRoutes.js";
+import postRouter from "./routes/postRoute.js";
+import commentRouter from "./routes/commentRoute.js";
 
 const app = express();
 app.use(cookieParser());
@@ -32,7 +34,8 @@ app.use(limiter);
 app.use(express.json());
 
 app.use("/api/auth", authRoutes);
-
+app.use("/api/posts", postRouter);
+app.use("/api/comments", commentRouter);
 
 app.use((err, req, res, next) => {
   console.error(chalk.red(err.stack));

@@ -22,4 +22,15 @@ const createPost = async (req, res) => {
   }
 };
 
-export { createPost };
+const getAllPosts = async (req, res) => {
+  try {
+    const posts = await Post.find().populate("user", "name");
+    res.status(200).json({ posts });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Failed to retrieve posts", error: error.message });
+  }
+};
+
+export { createPost, getAllPosts };

@@ -49,4 +49,31 @@ const getPostById = async (req, res) => {
       .json({ message: "Failed to retrieve post", error: error.message });
   }
 };
-export { createPost, getAllPosts, getPostById };
+
+const deletePost = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const user = req.user;
+
+    const post = await Post.findById(id);
+
+    if (!post) {
+      return res.status(404).json({ message: "Post not found" });
+    }
+
+    if (post.user.toString() !== user) {
+      return res
+        .status(403)
+        .json({ message: "You do not have permission to delete this post." });
+    }
+
+    await Post.findByIdAndDelete(id);
+
+    res.status(200).json({ message: "Post deleted successfully" });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Failed to delete post", error: error.message });
+  }
+};
+export { createPost, getAllPosts, getPostById, deletePost };

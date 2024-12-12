@@ -22,5 +22,21 @@ const createComment = async (req, res) => {
       .json({ error: "Error creating comment.", details: error.message });
   }
 };
+const getCommentsByPostId = async (req, res) => {
+  try {
+    const { id } = req.params;
 
-export { createComment };
+    if (!id) {
+      return res.status(400).json({ error: "Post ID is required." });
+    }
+
+    const comments = await Comment.find({ post: id }).populate("post", "title");
+
+    res.status(200).json(comments);
+  } catch (error) {
+    res
+      .status(500)
+      .json({ error: "Error fetching comments.", details: error.message });
+  }
+};
+export { createComment, getCommentsByPostId };

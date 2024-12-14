@@ -39,7 +39,8 @@ export async function loginUser(req, res) {
     const token = jwt.sign(payload, jwtSecret, {
       expiresIn: "1h",
     });
-    res.status(200).json({ token });
+    user.password = undefined;
+    res.status(200).json({ token, user });
   } catch (error) {
     res.status(500).json({ message: "Server Error" });
   }

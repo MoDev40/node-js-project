@@ -39,6 +39,19 @@ const useBlogs = create((set, get) => ({
     });
     set({ article: data });
   },
+  deleteBlog: async (id) => {
+    set({ loading: true });
+    await axiosInstance
+      .delete(`/posts/delete/${id}`)
+      .catch(() => {
+        toast.error("try again");
+      })
+      .finally(() => {
+        set({ loading: false });
+        toast.success("Successfully");
+        window.location.pathname = "/";
+      });
+  },
 }));
 
 export default useBlogs;

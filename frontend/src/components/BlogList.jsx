@@ -1,22 +1,13 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
+import useBlogs from "@/store/blogSlice";
+import { useEffect } from "react";
 import toast from "react-hot-toast";
 import Blog from "./Blog";
 import { Button } from "./ui/button";
 
-function BlogList() {
-  const [blogs, setBlogs] = useState([]);
-  const [error, setError] = useState(false);
+const BlogList = () => {
+  const { fetchBlogs, error, reFetch, blogs } = useBlogs();
+
   useEffect(() => {
-    async function fetchBlogs() {
-      const res = await axios
-        .get("http://localhost:8000/api/posts/")
-        .catch(() => {
-          setError(true);
-        });
-      const data = await res.data;
-      setBlogs(data);
-    }
     toast.promise(fetchBlogs(), {
       loading: "Fetching Blogs",
     });
@@ -25,12 +16,7 @@ function BlogList() {
   if (error) {
     return (
       <div className="flex flex-col items-center justify-center h-screen">
-        <Button
-          className="w-28"
-          onClick={() => {
-            setError(false);
-          }}
-        >
+        <Button className="w-28" onClick={reFetch}>
           Re fetch
         </Button>
       </div>
@@ -49,11 +35,11 @@ function BlogList() {
           </p>
         </div>
         <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-          {blogs && blogs.map((blog) => <Blog key={blog.id} blog={blog} />)}
+          {blogs && blogs.map((blog) => <Blog key={blog._id} blog={blog} />)}
         </div>
       </div>
     </section>
   );
-}
+};
 
 export default BlogList;

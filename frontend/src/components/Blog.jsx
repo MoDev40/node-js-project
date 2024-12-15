@@ -1,65 +1,58 @@
-import axios from "axios"
-import { Pen, Trash2 } from "lucide-react"
-import { useState } from "react"
-import toast from "react-hot-toast"
-import { Link, useNavigate } from "react-router-dom"
-import CommentDialog from "./CommentDialog"
-import { Button } from "./ui/button"
+import { Pen, Trash2 } from "lucide-react";
+import { useState } from "react";
+import ReactMarkdown from "react-markdown";
+import { Link, useNavigate } from "react-router-dom";
+import CommentDialog from "./CommentDialog";
+import { Button } from "./ui/button";
 
 const Blog = ({ blog }) => {
-  const [loading,setLoading] = useState(false)
-  const navigate = useNavigate()
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
-  const user = JSON.parse(window.localStorage.getItem("user"))
+  const user = JSON.parse(window.localStorage.getItem("user"));
 
-  async function handleDelete(){
-    setLoading(true)
-    await axios.delete(`http://localhost:8080/api/posts/delete/${blog.id}`).catch(()=>{
-      toast.error("try again")
-    }).finally(()=>{
-        setLoading(false)
-        toast.success("Successfully")
-        window.location.pathname = "/"
-    })
-  }
+  async function handleDelete() {}
   return (
     <div className="rounded-lg overflow-hidden bg-background shadow-md transition-all hover:scale-[1.02] hover:shadow-md">
-    <Link to={`/blog/article/${blog?.id}`} className="block">
-      <img
-        src={blog?.coverUrl}
-        alt={blog?.title}
-        width={600}
-        height={400}
-        className="w-full h-48 object-cover"
-      />
-    </Link>
-    <div className="p-4">
-      <h3 className="text-lg font-semibold mb-2">
-        {blog?.title}
-      </h3>
-      <p className="text-muted-foreground mb-4">
-        {blog?.summary}
-      </p>
-      <div className="flex items-center justify-between">
-        <CommentDialog post_id={blog.id} title={blog.title}/>
-        {
-          user?.id === blog.post_id &&
-        <>
-          <Button onClick={()=>{
-            navigate(`edit/blog-post/${blog.id}`)
-          }} variant="ghost" size="icon">
-            <Pen className="w-5 h-5" />
-          </Button>
-          <Button disabled={loading} onClick={handleDelete} variant="ghost" size="icon">
-            <Trash2 color="red" size={18} className="w-5 h-5" />
-          </Button>
-        </>
-        }
+      <Link to={`/blog/article/${blog?._id}`} className="block">
+        <img
+          src={blog?.coverUrl}
+          alt={blog?.title}
+          width={600}
+          height={400}
+          className="object-cover w-full h-48"
+        />
+      </Link>
+      <div className="p-4">
+        <h3 className="mb-2 text-lg font-semibold">{blog?.title}</h3>
+        <ReactMarkdown>{blog?.content.slice(0, 25)}</ReactMarkdown>
+        <div className="flex items-center justify-between">
+          <CommentDialog post_id={blog._id} title={blog.title} />
+          {user?.id === blog?.user && (
+            <>
+              <Button
+                onClick={() => {
+                  navigate(`edit/blog-post/${blog._id}`);
+                }}
+                variant="ghost"
+                size="icon"
+              >
+                <Pen className="w-5 h-5" />
+              </Button>
+              <Button
+                disabled={loading}
+                onClick={handleDelete}
+                variant="ghost"
+                size="icon"
+              >
+                <Trash2 color="red" size={18} className="w-5 h-5" />
+              </Button>
+            </>
+          )}
+        </div>
       </div>
     </div>
-  </div>  
-  )
-}
+  );
+};
 
-
-export default Blog
+export default Blog;

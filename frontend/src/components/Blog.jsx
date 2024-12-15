@@ -1,17 +1,19 @@
+import useBlogs from "@/store/blogSlice";
 import { Pen, Trash2 } from "lucide-react";
-import { useState } from "react";
 import ReactMarkdown from "react-markdown";
 import { Link, useNavigate } from "react-router-dom";
 import CommentDialog from "./CommentDialog";
 import { Button } from "./ui/button";
 
 const Blog = ({ blog }) => {
-  const [loading, setLoading] = useState(false);
+  const { deleteBlog, loading } = useBlogs();
   const navigate = useNavigate();
 
   const user = JSON.parse(window.localStorage.getItem("user"));
 
-  async function handleDelete() {}
+  async function handleDelete() {
+    deleteBlog(blog._id);
+  }
   return (
     <div className="rounded-lg overflow-hidden bg-background shadow-md transition-all hover:scale-[1.02] hover:shadow-md">
       <Link to={`/blog/article/${blog?._id}`} className="block">

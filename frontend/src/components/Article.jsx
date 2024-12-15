@@ -1,25 +1,15 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
+import useBlogs from "@/store/blogSlice";
+import { useEffect } from "react";
 import toast from "react-hot-toast";
 import ReactMarkdown from "react-markdown";
 import { Link, useParams } from "react-router-dom";
 
 function Article() {
-  const [article, setArticle] = useState({});
-  const [error, setError] = useState(false);
+  const { article, error, fetchArticle, reFetch } = useBlogs();
   const { id } = useParams();
 
   useEffect(() => {
-    async function fetchArticle() {
-      const res = await axios
-        .get(`http://localhost:8000/api/posts/${id}`)
-        .catch(() => {
-          setError(true);
-        });
-      const data = await res.data;
-      setArticle(data);
-    }
-    toast.promise(fetchArticle(), {
+    toast.promise(fetchArticle(id), {
       loading: "Fetching Article",
     });
   }, []);
@@ -47,7 +37,11 @@ function Article() {
             <ReactMarkdown>{article?.content}</ReactMarkdown>
           </div>
         </article>
-        <Link className="text-center text-blue-500 underline" to="/">
+        <Link
+          onClick={reFetch}
+          className="text-center text-blue-500 underline"
+          to="/"
+        >
           Back to blogs
         </Link>
       </div>

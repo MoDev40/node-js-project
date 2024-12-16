@@ -2,35 +2,25 @@ import { CornerDownLeft, Loader2 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import axios from "axios";
-import { useState } from "react";
+import useComments from "@/store/commentSlice";
 import toast from "react-hot-toast";
 import { Textarea } from "./ui/textarea";
 
 const CommentForm = ({ post_id }) => {
-  const [loading, setLoading] = useState(false);
-  const user = JSON.parse(window.localStorage.getItem("user"));
+  const { createComment, loading, fetchComments } = useComments();
   async function handleSubmit(e) {
-    setLoading(true);
     e.preventDefault();
     const formData = new FormData(e.target);
 
-    const comment = {
-      post_id,
+    const data = {
+      post: post_id,
       message: formData.get("message"),
     };
 
-    await axios
-      .post("http://localhost:8080/api/comments/create", comment)
-      .then(() => {
-        window.location.pathname = "/";
-      })
-      .catch(() => {
-        toast.error("try again");
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+    toast.promise(createComment(data), {
+      loading: "comment creation",
+    });
+    fetchComments(post_id);
   }
   return (
     <form

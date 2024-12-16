@@ -6,13 +6,14 @@ import CommentDialog from "./CommentDialog";
 import { Button } from "./ui/button";
 
 const Blog = ({ blog }) => {
-  const { deleteBlog, loading } = useBlogs();
+  const { deleteBlog, loading, fetchBlogs } = useBlogs();
   const navigate = useNavigate();
 
   const user = JSON.parse(window.localStorage.getItem("user"));
 
   async function handleDelete() {
-    deleteBlog(blog._id);
+    await deleteBlog(blog._id);
+    await fetchBlogs();
   }
   return (
     <div className="rounded-lg overflow-hidden bg-background shadow-md transition-all hover:scale-[1.02] hover:shadow-md">

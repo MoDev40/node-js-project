@@ -7,12 +7,7 @@ const useBlogs = create((set, get) => ({
   error: false,
   article: {},
   loading: false,
-  reFetch: function () {
-    const error = get().error;
-    if (error) {
-      set({ error: false });
-    }
-  },
+
   fetchBlogs: async () => {
     const { data } = await axiosInstance.get("/posts/").catch(() => {
       set({ error: true });
@@ -23,9 +18,6 @@ const useBlogs = create((set, get) => ({
     set({ loading: true });
     await axiosInstance
       .post("/posts/create", post)
-      .then(() => {
-        window.location.pathname = "/";
-      })
       .catch(() => {
         toast.error("try again..");
       })
@@ -49,7 +41,6 @@ const useBlogs = create((set, get) => ({
       .finally(() => {
         set({ loading: false });
         toast.success("Successfully");
-        window.location.pathname = "/";
       });
   },
 }));

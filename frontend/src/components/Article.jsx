@@ -5,7 +5,7 @@ import ReactMarkdown from "react-markdown";
 import { Link, useParams } from "react-router-dom";
 
 function Article() {
-  const { article, error, fetchArticle, reFetch } = useBlogs();
+  const { article, error, fetchArticle } = useBlogs();
   const { id } = useParams();
 
   useEffect(() => {
@@ -37,11 +37,7 @@ function Article() {
             <ReactMarkdown>{article?.content}</ReactMarkdown>
           </div>
         </article>
-        <Link
-          onClick={reFetch}
-          className="text-center text-blue-500 underline"
-          to="/"
-        >
+        <Link className="text-center text-blue-500 underline" to="/">
           Back to blogs
         </Link>
       </div>

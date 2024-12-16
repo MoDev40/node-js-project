@@ -7,10 +7,12 @@ import SimpleMDE from "react-simplemde-editor";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
+import route from "@/lib/route";
 
 function CreateBlogPost() {
   const [content, setContent] = useState("");
   const { loading, postBlog } = useBlogs();
+  const [navigate] = route();
   const user = JSON.parse(window.localStorage.getItem("user"));
 
   const onChange = useCallback((content) => {
@@ -38,7 +40,8 @@ function CreateBlogPost() {
       tags: formData.get("tags"),
       content,
     };
-    postBlog(post);
+    await postBlog(post);
+    navigate("/");
   }
   return (
     <div className="container flex flex-col items-center justify-center min-h-screen mx-auto bg-background">

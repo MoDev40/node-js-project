@@ -5,18 +5,18 @@ import Blog from "./Blog";
 import { Button } from "./ui/button";
 
 const BlogList = () => {
-  const { fetchBlogs, error, reFetch, blogs } = useBlogs();
+  const { fetchBlogs, error, blogs } = useBlogs();
 
   useEffect(() => {
     toast.promise(fetchBlogs(), {
       loading: "Fetching Blogs",
     });
-  }, [error]);
+  }, []);
 
   if (error) {
     return (
       <div className="flex flex-col items-center justify-center h-screen">
-        <Button className="w-28" onClick={reFetch}>
+        <Button className="w-28" onClick={fetchBlogs}>
           Re fetch
         </Button>
       </div>

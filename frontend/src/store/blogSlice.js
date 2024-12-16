@@ -43,6 +43,16 @@ const useBlogs = create((set, get) => ({
         toast.success("Successfully");
       });
   },
+  editPost: async (id, data) => {
+    await axiosInstance
+      .put(`/posts/edit/${id}`, data)
+      .catch(() => {
+        toast.error("try again..");
+      })
+      .finally(() => {
+        set({ error: false, article: {}, loading: false });
+      });
+  },
 }));
 
 export default useBlogs;

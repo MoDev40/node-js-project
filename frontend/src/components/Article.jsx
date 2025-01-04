@@ -25,7 +25,7 @@ function Article() {
     article && (
       <div className="flex flex-col px-4 py-6 space-y-6 md:px-6 lg:py-16">
         <article className="max-w-3xl mx-auto prose prose-gray dark:prose-invert">
-          <h1 className="text-4xl font-extrabold tracking-tight lg:text-5xl lg:leading-[3.5rem]">
+          <h1 className="text-3xl font-extrabold tracking-tight lg:text-5xl lg:leading-[3.5rem]">
             {article?.title}
           </h1>
           <div className="mt-6">

@@ -28,7 +28,6 @@ const Blog = ({ blog }) => {
       </Link>
       <div className="p-4">
         <h3 className="mb-2 text-lg font-semibold">{blog?.title}</h3>
-        <ReactMarkdown>{blog?.content.slice(0, 25)}</ReactMarkdown>
         <div className="flex items-center justify-between">
           <CommentDialog post_id={blog._id} title={blog.title} />
           {user?.id === blog?.user && (

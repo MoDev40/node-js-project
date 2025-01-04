@@ -3,7 +3,7 @@ import User from "../models/User.js";
 import { jwtSecret } from "../config/config.js";
 import { hashPassword, comparePassword } from "../utils/utils.js";
 
-export async function registerUser(req, res) {
+async function registerUser(req, res) {
   const { email, name, password } = req.body;
   try {
     const isUserExists = await User.findOne({ email });

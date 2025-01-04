@@ -4,6 +4,7 @@ import Comment from "../models/comment.js";
 
 const router = express.Router();
 
+// create comment specific post
 router.post("/create", auth, async (req, res) => {
   try {
     const { message, post } = req.body;
@@ -26,6 +27,8 @@ router.post("/create", auth, async (req, res) => {
       .json({ error: "Error creating comment.", details: error.message });
   }
 });
+
+// Get comments by post id
 router.get("/:id", async (req, res) => {
   try {
     const { id } = req.params;

@@ -4,6 +4,7 @@ import Post from "../models/post.js";
 
 const router = express.Router();
 
+// create post
 router.post("/create", auth, async (req, res) => {
   try {
     const { title, coverUrl, tags, content } = req.body;
@@ -27,6 +28,7 @@ router.post("/create", auth, async (req, res) => {
   }
 });
 
+// get posts
 router.get("/", async (req, res) => {
   try {
     const posts = await Post.find();
@@ -38,6 +40,7 @@ router.get("/", async (req, res) => {
   }
 });
 
+// get post by id
 router.get("/:id", async (req, res) => {
   try {
     const { id } = req.params;
@@ -55,6 +58,7 @@ router.get("/:id", async (req, res) => {
   }
 });
 
+//delete post by id
 router.delete("/delete/:id", auth, async (req, res) => {
   try {
     const { id } = req.params;
@@ -82,6 +86,7 @@ router.delete("/delete/:id", auth, async (req, res) => {
   }
 });
 
+// update post by id
 router.put("/edit/:id", auth, async (req, res) => {
   try {
     const { id } = req.params;
